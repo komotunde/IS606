@@ -1,0 +1,21 @@
+---
+title: "Homework3"
+author: "Oluwakemi Omotunde"
+date: "September 16, 2016"
+output: pdf_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(IS606)
+```
+3.18) Heights of female college students. Below are heights of 25 female college students.
+ 
+```{r}
+heights <- c(54, 55, 56, 56, 57, 58, 58, 59, 60, 60, 60, 61, 61, 62, 62, 63, 63, 63, 64, 65, 65, 67, 67, 69, 73)
+mean(heights)
+sd(heights)
+qqnormsim(heights)
+qqnorm(heights)
+qqline(heights)
+```
