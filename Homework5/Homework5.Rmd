@@ -1,0 +1,150 @@
+---
+title: "Chapter 5 Exercises"
+author: "Oluwakemi Omotunde"
+date: "October 27, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#####**5.6 Working Backwards, PART II.** A 90% confidence interval for a population mean is (65, 77). The population distribution is approximately normal and the population standard deviation is unknown. This confidence interval is based on a simple random sample of 25 observations. Calculate the sample mean,  the margin of error, and the sample standard deviation.
+
+```{r working_backwards}
+n <- 25
+
+#we know that the margin of error is (b-a)/2 where the confidence interval is (a,b)
+ME <- ((77-65)/2)
+ME
+
+#we know that sample mean is calculated as (a+b)/2 for confidence interval (a,b)
+xbar <- ((77+65)/2)
+xbar
+
+#to calculate the sample standard devation we use ME = t(.05)*s/sqrt(n). Using the qt function and df = 25-1 we get
+
+df <- 25-1
+t.value <- qt(.95, df)
+t.value
+sd <- (ME/t.value)*5
+sd
+```
+
+#####**5.14 SAT Scores** SAT Scores of students at an Ivy League college are distributed with a standard deviation of 250 points. Two statistics students, Raina and Luke, want to estimate the average SAT score of students in this college as part of a class project. They want their margin of error to be no more that 25 points.
+
+* Raina wants to use a 90% confidence interval. How large a sample should she collect?
+```{r Raina}
+#we will use formual n = (Z(.05)*(standard deviation)/ME)^2
+z.star <- 1.65
+ME <- 25
+SD <- 250
+
+sample.size <- (((z.star*SD)/(ME))^2)
+sample.size
+
+#we would need 273 participants
+```
+
+* Luke wants to use a 99% confidence. Without calculating the actual sample size, determine whether his sample should be larger or smaller than Raina's and explain your reasoning.
+    + I would say that since we are multiplying the SD by a larger number, we will get a larger sample size for Luke's 99% interval.
+    
+* Calculate the minimum required sample size for Luke.
+
+```{r LUKE}
+#we will use formual n = (Z(.05)*(standard deviation)/ME)^2
+zstar.Luke <- 2.58
+ME <- 25
+SD <- 250
+
+samplesize.Luke <- (((zstar.Luke*SD)/(ME))^2)
+samplesize.Luke
+
+#we would need 273 participants
+```
+
+#####**5.20 High School and Beyond, Part I** The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and serveral other subjects. Here we examine a simple random sample of 200 from this survey. Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below. 
+
+* Is there a clear difference in the average reading and writing scores?
+
+    + I do not see a clear difference in the average of the reading and writing scores.
+    
+* Are the reading and writing scores of each student independent of each other?
+  
+    + I would say that the scores are independent of each other. 
+  
+* Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in reading and writing exam?
+
+    + (H_0: mean_(read) - mean_(write) = 0)
+    + (H_A: mean_(read) - mean_(write) does not equal 0)
+    
+* Check the conditions required to complete this test.
+
+    + The conditions required for this test are independence and normality. We already stated above that the observations are independent. Looking at the box plot,  we don't see any skewness or outliers so we can say that the conditions are satisfied. 
+  
+* The average observed difference in scores is -.545 and the standard deviation of the difference is 8.887 points. Do these data provide convincing evidence of a difference between the average scores on the two exams?
+  
+    
+```{r p value}
+n <- 200
+mean.diff <- -.545
+df <- n-1
+SD <- 8.887
+SE <- SD/sqrt(n)
+T <- (mean.diff-0)/SE
+pvalue <- pt(T, df)
+pvalue
+#our t-value, .19 > .05 so we fail to reject the null hypothesis. we do no have convining evidence of a difference between the average reading and writing exam scores.
+```
+
+* What type of error might we have made? Explain what the error means in the context of the application.
+  
+    + Since we did NOT reject the null hypothesis, we are at a risk of making a Type II error. In this instance, we should have noticed that we had convincing data that there is a difference in the reading and writing average scores but did not. 
+    
+* Based on the results of this hypothesis test, would you expect a confidence interval for the average difference between the reading and the writing scores to include 0? Explain your reasoning.
+
+    + Being that our results indicated that there is no difference in the reading and writing scores, I would expect that the confidence interval would include 0.
+    
+#####**5.32 Fuel Efficiency of manual and automatic cars, Part I** Each year the US Environmental Protection Agency (EPA) releases fuel economy data on cars manufactured in that year. Below are summary statistics on fuel efficiency(in miles/gallon) from random samples of cars with manual and automatic transmissions manufactured in 2012. Do these data provide strong evidence of a difference between the average fuel efficiency of cars with manual and automatic transmission in terms of their average city mileage? Assume that conditions of inference are satisfied. 
+
+    + Null: mean.A - mean.M = 0
+    + alternate: mean.A - mean.M does not equal 0
+    
+```{r fuel}
+n.a <- 26
+n.m <- 26
+SD.A <- 3.58
+SD.M <- 4.51
+mean.A <- 16.12
+mean.M <- 19.85
+alpha <- .05
+meandiff <- mean.A - mean.M
+SE.A <- SD.A/sqrt(n.a) 
+SE.M <- SD.M/sqrt(n.m)
+SE <- sqrt(((SE.A)^2)+(SE.M)^2)
+T.1 <- (meandiff-0)/SE
+pvalue.1 <- pt(T.1, 25)
+pvalue.1 <- 2*pvalue.1 #because we are running a two tailed test, we multiply by 2
+pvalue.1
+
+##our pvalue, .003 < .05 so we will reject out null hypothesis. This means that there is enough evidence supporting that there is a difference in the average city miles of automatic and manual vehicles.
+```
+
+
+#####**5.48 Work hours and education** The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Using ANOVA, we can consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.
+
+* Write hypotheses for evaluating whether the average number of hours worked varies across the five groups.
+
+   + Null: mean(lessthanhs) = mean(HS) = mean(JC) = mean(B) = mean(G)
+   + Alternate: at least one of the means differ
+  
+* Check conditions and describe any assumptions you must make to proceed with the test.
+
+    + For ANOVA we must check  for independence within and across groups, normality, and nearly equal variability across groups. We look at the box plot to determine that this data set meets those requirements and it does. 
+    
+```{r ANOVA}
+anova.table <- read.csv("C:/Users/OluwakemiOmotunde/Desktop/6.48.csv")
+anova.table
+##pdf for calculations is attached.
+```
+
