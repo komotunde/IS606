@@ -1,0 +1,239 @@
+---
+title: "Final Exam"
+author: "Oluwakemi Omotunde"
+date: "December 9, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##DATA 606 FALL 2016 - FINAL EXAM
+
+###PART I
+
+**Figure A below represents the distribution of an observed variable. Figure B below represents the distribution of the mean from 500 random samples of size 30 from A. The mean of A is 5.05 and the mean of B is 5.04. The standard deviations of A and B are 3.22 and 0.58, respectively.**
+
+a.	Describe the two distributions (2 pts).
+
+Distribution A is multi-modal distribution skewed right (positively) while Distribution B is a unimodal nearly normal distribution.  I would expect to see some outliers in Distribution A since it is so skewed to the right. 
+
+b.	Explain why the means of these two distributions are similar but the standard deviations are not (2 pts).
+
+Distribution B is for the mean from random samples with n = 30 from A. This implies that the means should be relatively similar. By definition, standard deviation of the sampling distribution (Distribution B) is the standard error of the mean. We can actually calculate this value as follows: 
+
+.	SE = standard deviation/sqrt(n) = 3.22/sqrt(30) =.58 
+.	The above calculation showed how this concept works.
+
+
+c.	What is the statistical principal that describes this phenomenon (2 pts)?
+
+The  Central Limit Theorem which states  "if a sample consists of at least 30   independent observations and the data are not strongly skewed, then the distribution of the sample mean is well approximated by a normal model (p. 177).  
+
+
+
+###PART II
+
+**Consider the four datasets, each with colums (x and y), provided below: 
+
+```{r datasets}
+options(digits=2)
+data1  <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5),
+  y=c(8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68)) 
+
+data2  <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5),
+y=c(9.14,8.14,8.74,8.77,9.26,8.1,6.13,3.1,9.13,7.26,4.74)) 
+
+data3  <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5),
+y=c(7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73))
+
+data4  <- data.frame(x=c(8,8,8,8,8,8,8,19,8,8,8),
+y=c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.5,5.56,7.91,6.89))
+
+```
+
+a.	The mean (for x and y separately; 1  pt).
+
+```{r mean x values}
+mean.x1 <- mean(data1$x)
+mean.x1 #9
+mean.x2 <- mean(data2$x)
+mean.x2 #9
+mean.x3 <- mean(data3$x)
+mean.x3 #9
+mean.x4 <- mean(data4$x)
+mean.x4 #9
+
+#surprisingly, all the x averages are 9
+```
+
+Now to calculate the Y means
+
+```{r y means}
+mean.y1 <- mean(data1$y)
+mean.y1 #7.5
+mean.y2 <- mean(data2$y)
+mean.y2 #7.5
+mean.y3 <- mean(data3$y)
+mean.y3 #7.5
+mean.y4 <- mean(data4$y)
+mean.y4 #7.5
+
+#We observe the same y mean for all four data sets. 
+```
+
+b.	The median (for x and y separately; 1  pt).
+
+```{r x median}
+summary(data1$x) #9
+summary(data2$x) #9
+summary(data3$x) #9
+summary(data4$x) #9
+```
+
+By running the summary as we did above, we can capture the general stats for the set.
+
+```{r y median}
+summary(data1$y) #7.6
+summary(data2$y) #8.1
+summary(data3$y) #7.1
+summary(data4$y) #7.0
+
+#I was almost expecting all these values to be uniform since all our previous ones were.
+```
+
+c.	The standard deviation (for x and y separately; 1 pt).
+
+```{r standard deviation x}
+x.sd1 <- sd(data1$x)
+x.sd1 
+x.sd2 <- sd(data2$x)
+x.sd2
+x.sd3 <- sd(data3$x)
+x.sd3
+x.sd4 <- sd(data4$x)
+x.sd4
+
+#As I expected, the standard deviation is the same (3.3) for all for datasets. 
+```
+
+Now to caluculated for y values.
+
+```{r sd y}
+y.sd1 <- sd(data1$y)
+y.sd1 
+y.sd2 <- sd(data2$y)
+y.sd2
+y.sd3 <- sd(data3$y)
+y.sd3
+y.sd4 <- sd(data4$y)
+y.sd4
+
+#For all the Y values, our standard deviation is 2.
+```
+
+
+For each x and y pair, calculate (also to two decimal places; 1  pt):
+
+d.	The correlation (1 pt).
+```{r correlation}
+data1.corr <- cor(data1) #.82
+data2.corr <- cor(data2) #.82
+data3.corr <- cor(data3) #.82
+data4.corr <- cor(data4) #.82
+```
+
+e.	Linear regression equation (2  pts).
+
+```{r linear regression}
+data1.regression <- lm(x ~ y, data = data1)
+summary(data1.regression)
+
+#y = -.998 + 1.333 * x
+
+data2.regression <- lm(x ~ y, data = data2)
+summary(data2.regression)
+
+#y = -.995 + 1.332 * x
+
+data3.regression <- lm(x ~ y, data = data3)
+summary(data3.regression)
+
+# y = -1 + 1.33 * x
+
+data4.regression <- lm(x ~ y, data = data4)
+summary(data4.regression)
+
+#y = -1.004 + 1.334 * x
+```
+
+f.	R-Squared (2 pts).
+
+```{r r-squared}
+summary(data1.regression)   #.667
+summary(data2.regression)   #.666
+summary(data3.regression)   #.666
+summary(data4.regression)   #.667
+```
+
+
+For each pair, is it appropriate to estimate a linear regression model? Why or why not? Be specific as to why for each pair and include appropriate plots! (4 pts)
+
+The conditions for a linear regression model are as follows:
++ *Linearity:* data should show a linear trend
++ *Nearly normal residuals:* residuals must be nearly normal
++ *Constant variablity:* variability of points around the line remains roughly constant
++ *Independent observations:* observations are independent of each other. 
+  + For each of the data sets, we will assume that our observations are independent.
+
+```{r data1}
+plot(data1)
+
+#This plot seems to have a positive linear relationship
+
+data.1 <- lm(x ~y, data = data1)
+qqnorm(data.1$residuals)
+qqline(data.1$residuals) 
+hist(data.1$residuals)
+
+#the qqplot indicates that the residuals have a nearly normal distribution but the histogram does not.
+
+plot(data.1$residuals~data1$x)
+abline(h = 0, lty = 3)
+#the variablity seems to be relatively constant with the exception of the point at 4.
+```
+
+```{r data2}
+plot(data2) 
+
+#This plot seems to have a non linear relationship. From this alone we can say that a linear model would not be appropriate. We need not got further.
+```
+
+```{r data3}
+plot(data3)
+
+#This plot seems to have a positive linear relationship with the exception of one point that looks to be an outlier.
+
+data.3 <- lm(x ~y, data = data3)
+qqnorm(data.3$residuals)
+qqline(data.3$residuals) 
+
+#the qqplot indicates that the residuals have a nearly normal distribution as most points fall on the line.
+
+plot(data.3$residuals~data3$x)
+abline(h = 0, lty = 3)
+#the variablity seems to change as the x value changes. 
+#Overall, I would conclude that linear regression model is not appropriate.
+```
+
+```{r data4}
+plot(data4)
+
+#This plot seems to have a non linear relationship. Based on this, linear regression model is not appropriate. We need not go further.
+```
+
+Explain why it is important to include appropriate visualizations when analyzing data. Include any visualization(s) you create. (2 pts)
+
+It is extremely importat to include visualizations to provide a better picture. The above exercise is such a case whererby plotting the data provides a clearer idea of what is really happening. For example, many of the variables of measurement are the same for a few of the datasets. Based on that alone, on could assume that all three sets behave the same. It is not until we plot that datasets and provide some visual aids to go along with it that we realize that even though those variables of measurement are the same, the sets of data behave quite differently. 
+
